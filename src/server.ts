@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import {InversifyExpressServer} from "inversify-express-utils";
-import {container, Logger, serverConfig, serverErrorConfig} from "../config";
+import {container, Logger, serverConfig, serverErrorConfig} from "./config";
+import './controllers/auth.controller';
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 
@@ -15,6 +16,7 @@ process.on('SIGTERM', () => handleSignal('SIGTERM'));
 process.on('SIGINT', () => handleSignal('SIGINT'));
 
 export async function Bootstrap() {
+    console.log(port)
     const server = new InversifyExpressServer(container);
     server.setConfig(serverConfig);
     server.setErrorConfig(serverErrorConfig);
