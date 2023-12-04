@@ -19,7 +19,6 @@ export async function serverConfig(app: Application) {
     app.use(json());
     
     const database = container.get(DatabaseConnection);
-    await database.initConnection();
 }
 
 
