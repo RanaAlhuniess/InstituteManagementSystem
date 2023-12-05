@@ -1,8 +1,9 @@
 import {Application, json, NextFunction, Request, Response, urlencoded} from "express";
 import {BaseException, InternalServerException} from "./exception.config";
-import {container} from './inversify.config';
 import cors from 'cors';
-import {DatabaseConnection} from "../database";
+import {container} from "./inversify.config";
+import passport from "passport";
+import {AccessTokenStrategy} from "../middelware/strategy/access-token.strategy";
 
 export async function serverConfig(app: Application) {
     //TODO: refactoring
@@ -17,8 +18,10 @@ export async function serverConfig(app: Application) {
         extended: true,
     }));
     app.use(json());
-    
-    const database = container.get(DatabaseConnection);
+
+    app.use(passport.initialize());
+    const accessTokenStrategy = container.get(AccessTokenStrategy);
+    accessTokenStrategy.init();
 }
 
 
