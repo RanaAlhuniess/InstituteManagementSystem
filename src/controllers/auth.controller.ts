@@ -1,26 +1,24 @@
-import {
-  BaseHttpController,
-  controller,
-  httpDelete,
-  httpGet,
-  httpPost,
-  request,
-  requestBody,
-} from 'inversify-express-utils';
-import { inject } from 'inversify';
+import {BaseHttpController, controller, httpPost, requestBody,} from 'inversify-express-utils';
+import {inject} from 'inversify';
+import {AuthService} from "../services/auth.service";
+import {RegisterRequestDto} from "../dtos/auth/register.request.dto";
+import {validateBody} from "../middelware";
+import {SigninRequestDto} from "../dtos/auth/signin.request.dto";
 
 @controller('/auth')
 export class AuthController extends BaseHttpController {
-  constructor() {
-    super();
-  }
-
-  @httpPost('/register')
-  register() {
-
-    console.log('hi from register');
-    return {
-      test: "hi from register"
+    constructor(@inject(AuthService) private readonly authService: AuthService) {
+        super();
     }
-  }
+
+    @httpPost('/register', validateBody(RegisterRequestDto))
+    register(@requestBody() dto: RegisterRequestDto) {
+        return this.authService.register(dto);
+
+    }
+
+    @httpPost('/signin', validateBody(SigninRequestDto))
+    signin(@requestBody() dto: SigninRequestDto) {
+        return this.authService.signin(dto);
+    }
 }

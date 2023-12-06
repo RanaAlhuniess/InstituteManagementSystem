@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify';
 import passport from 'passport';
 import {ExtractJwt, Strategy, VerifiedCallback} from 'passport-jwt';
-import {IUserRepository} from "../../repositories/auth/iUser.repository";
+import {IUserRepository} from "../../repositories/auth/user.repository";
 import {accessTokenConfig, Payload} from "../../config";
 
 @injectable()

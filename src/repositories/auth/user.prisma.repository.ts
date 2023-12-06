@@ -1,8 +1,9 @@
 import {inject, injectable} from "inversify";
-import {IUserRepository} from "./iUser.repository";
+import {IUserRepository} from "./user.repository";
 import {UserEntity} from "../../entities/user.entity";
 import {DatabaseConnection} from "../../database";
 import {PrismaClient} from "@prisma/client";
+import {ForbiddenException} from "../../config";
 
 @injectable()
 
@@ -14,13 +15,22 @@ export class UserPrismaRepository implements IUserRepository {
     }
 
     async create(user: UserEntity): Promise<UserEntity> {
-        const dbResult = await this.prismaClient.user.create({
-            data: {
-                email: user.email,
-                name: user.username,
+        try {
+            const dbResult = await this.prismaClient.user.create({
+                data: {
+                    email: user.email,
+                    password: user.password,
+                    roleId: user.roleId
+                }
+            });
+            return this.dbItemToEntity(dbResult);
+        } catch (error: any) {
+            if (error.code === 'P2002') {
+                throw new ForbiddenException(`Email ${user.email} is already in use`);
             }
-        });
-        return this.dbItemToEntity(dbResult);
+            throw error;
+        }
+
     }
 
     async findById(id: number): Promise<UserEntity> {
@@ -32,10 +42,20 @@ export class UserPrismaRepository implements IUserRepository {
         return this.dbItemToEntity(dbResult);
     }
 
+    async findUserByEmail(email: string): Promise<UserEntity> {
+        const dbResult = await this.prismaClient.user.findUnique({
+            where: {
+                email: email,
+            },
+        })
+        return this.dbItemToEntity(dbResult);
+    }
+
     private dbItemToEntity(item: any): UserEntity {
         return {
+            id: item.id,
             email: item.email,
-            username: item.name
+            password: item.password
         } as UserEntity;
     }
 
