@@ -9,19 +9,70 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  refreshTokens RefreshToken[]
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+
+model Student {
+  id           Int                   @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  gender       Gender
+  address      Address               @relation(fields: [addressId], references: [id])
+  addressId    Int
+  User         User                  @relation(fields: [userId], references: [id])
+  userId       Int                   @unique
+  reservations StudentReservations[]
 }
 
+model Instructor {
+  id             Int                      @id @default(autoincrement())
+  title          String
+  firstName      String
+  lastName       String
+  email          String
+  gender         Gender
+  teachingSince  DateTime
+  availabilities InstructorAvailability[]
+  reservations   StudentReservations[]
+  address        Address                  @relation(fields: [addressId], references: [id])
+  addressId      Int
+  User           User                     @relation(fields: [userId], references: [id])
+  userId         Int                      @unique
+}
+
+model InstructorAvailability {
+  id           Int        @id @default(autoincrement())
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  instructorId Int
+  dayOfWeek    Day
+  timeFrom     DateTime
+  timeTo       DateTime
+  activeFrom   DateTime
+  activeTo     DateTime?
+}
+
+model StudentReservations {
+  id           Int        @id @default(autoincrement())
+  student      Student    @relation(fields: [studentId], references: [id])
+  studentId    Int
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  instructorId Int
+  from         DateTime
+  to           DateTime
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  refreshTokens RefreshToken[]
+  role          Role           @relation(fields: [roleId], references: [id])
+  roleId        Int
+  student       Student?
+  instructor    Instructor?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+}
 model RefreshToken {
-  id          Int   @id @unique @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   hashedToken String
   User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
@@ -30,21 +81,29 @@ model RefreshToken {
   updatedAt   DateTime @default(now()) @updatedAt
 }
 model Address {
-  id      Int     @id @default(autoincrement())
-  street  String?
-  city    String?
-  country String?
-  // user    User    @relation(fields: [userId], references: [id])
-  // userId  Int     @unique
+  id          Int          @id @default(autoincrement())
+  street      String?
+  city        String?
+  country     String?
+  students    Student[]
+  instructors Instructor[]
 }
 enum Gender {
-  male
-  female
-  other
+  MALE
+  FEMALE
 }
 model Role {
-  id      Int     @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   roleName    String
   description String?
   users       User[]
+}
+enum Day {
+  SAT
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
 }
