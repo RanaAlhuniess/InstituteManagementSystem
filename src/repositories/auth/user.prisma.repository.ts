@@ -55,7 +55,8 @@ export class UserPrismaRepository implements IUserRepository {
         return {
             id: item.id,
             email: item.email,
-            password: item.password
+            password: item.password,
+            roleId: item.roleId
         } as UserEntity;
     }
 

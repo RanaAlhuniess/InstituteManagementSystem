@@ -6,6 +6,8 @@ export type JwtConfig = {
 export type Payload = {
     sub: string;
     email: string;
+
+    roleId: number;
 };
 export const accessTokenConfig: JwtConfig = {
     secret: process.env.ACCESS_TOKEN_SECRET || ((): never => {

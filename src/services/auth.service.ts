@@ -32,6 +32,7 @@ export class AuthService {
         const payload: Payload = {
             sub: String(user.id),
             email: user.email,
+            roleId: user.roleId
         };
         const accessToken = this.generateJWT(payload, accessTokenConfig);
         const refreshToken = this.generateJWT(payload, refreshTokenConfig);
@@ -61,6 +62,7 @@ export class AuthService {
             const payload: Payload = {
                 sub: String(user.id),
                 email: user.email,
+                roleId: user.roleId
             };
             const accessToken = this.generateJWT(payload, accessTokenConfig);
             const refreshToken = this.generateJWT(payload, refreshTokenConfig);
