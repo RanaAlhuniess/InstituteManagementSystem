@@ -70,7 +70,11 @@ export class RefreshTokenPrismaRepository implements IRefreshTokenRepository {
     }
 
     async findByUserIdAndDelete(userId: number): Promise<void> {
-
+        await this.prismaClient.refreshToken.deleteMany({
+            where: {
+                userId: userId,
+            },
+        });
     }
 
     private dbItemToEntity(item: any): RefreshTokenEntity {

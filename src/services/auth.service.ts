@@ -83,6 +83,9 @@ export class AuthService {
 
     }
 
+    async signout(userId: number): Promise<void> {
+        return await this.refreshTokenRepository.findByUserIdAndDelete(userId);
+    }
     generateJWT(payload: Payload, config: JwtConfig): string {
         return jwt.sign(payload, config.secret, {
             expiresIn: config.expiresIn,
