@@ -10,6 +10,9 @@ import {RefreshTokenPrismaRepository} from "../repositories/auth/refresh-token.p
 import {InstructorService} from "../services/instructor.service";
 import {IInstructorRepository} from "../repositories/instructor/instructor.repository";
 import {InstructorPrismaRepository} from "../repositories/instructor/instructor.prisma.repository";
+import {StudentService} from "../services/student.service";
+import {StudentPrismaRepository} from "../repositories/student/student.prisma.repository";
+import {IStudentRepository} from "../repositories/student/student.repository";
 
 export const container = new Container();
 container.bind(Logger).toSelf();
@@ -18,5 +21,7 @@ container.bind(AccessTokenStrategy).toSelf();
 container.bind(IUserRepository).to(UserPrismaRepository);
 container.bind(IInstructorRepository).to(InstructorPrismaRepository);
 container.bind(IRefreshTokenRepository).to(RefreshTokenPrismaRepository);
+container.bind(IStudentRepository).to(StudentPrismaRepository);
 container.bind(AuthService).toSelf();
 container.bind(InstructorService).toSelf();
+container.bind(StudentService).toSelf();

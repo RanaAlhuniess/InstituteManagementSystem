@@ -1,7 +1,7 @@
 import {inject, injectable} from "inversify";
 import {Logger} from "../config";
 import {IInstructorRepository} from "../repositories/instructor/instructor.repository";
-import moment, {Moment} from "moment";
+import moment from "moment";
 import {AvailabilityResponseDto} from "../dtos/instructor/availability.response.dto";
 import {BookingRequestDto} from "../dtos/instructor/booking.request.dto";
 
@@ -43,11 +43,10 @@ export class InstructorService {
     }
 
     async book(instructorId: number, dto: BookingRequestDto) {
-        // check if this slot available
-        // yes: book
         const {studentId, date, to, from} = dto;
         const fromDate = moment(`${date} ${from}`, 'YYYY-MM-DD HH:mm').toDate();
         const toDate = moment(`${date} ${to}`, 'YYYY-MM-DD HH:mm').toDate();
+        //TODO: check if the time slot available
         await this.instructorRepository.book(instructorId, studentId, fromDate, toDate)
     }
 

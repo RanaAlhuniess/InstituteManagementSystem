@@ -3,3 +3,4 @@ export * from './server.config';
 export * from './inversify.config';
 export * from './exception.config';
 export * from './jwt.config';
+export * from './date.config';
