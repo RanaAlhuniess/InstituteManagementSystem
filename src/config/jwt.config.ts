@@ -13,7 +13,7 @@ export const accessTokenConfig: JwtConfig = {
     secret: process.env.ACCESS_TOKEN_SECRET || ((): never => {
         throw new Error('ACCESS_TOKEN_SECRET not defined in environment variables');
     })(),
-    expiresIn: '10m',
+    expiresIn: '30m',
 };
 
 export const refreshTokenConfig: JwtConfig = {

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import 'reflect-metadata';
 import {InversifyExpressServer} from "inversify-express-utils";
 import {container, Logger, serverConfig, serverErrorConfig} from "./config";
-import './controllers/auth.controller';
+import './controllers/index';
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 

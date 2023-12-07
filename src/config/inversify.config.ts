@@ -7,11 +7,16 @@ import {AccessTokenStrategy} from "../middelware/strategy/access-token.strategy"
 import {AuthService} from "../services/auth.service";
 import {IRefreshTokenRepository} from "../repositories/auth/refresh-token.repository";
 import {RefreshTokenPrismaRepository} from "../repositories/auth/refresh-token.prisma.repository";
+import {InstructorService} from "../services/instructor.service";
+import {IInstructorRepository} from "../repositories/instructor/instructor.repository";
+import {InstructorPrismaRepository} from "../repositories/instructor/instructor.prisma.repository";
 
 export const container = new Container();
 container.bind(Logger).toSelf();
 container.bind(DatabaseConnection).toSelf();
 container.bind(AccessTokenStrategy).toSelf();
 container.bind(IUserRepository).to(UserPrismaRepository);
+container.bind(IInstructorRepository).to(InstructorPrismaRepository);
 container.bind(IRefreshTokenRepository).to(RefreshTokenPrismaRepository);
 container.bind(AuthService).toSelf();
+container.bind(InstructorService).toSelf();
