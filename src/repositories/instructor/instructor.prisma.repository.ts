@@ -5,6 +5,7 @@ import {DatabaseConnection} from "../../database";
 import {InstructorEntity} from "../../entities/instructor.entity";
 import {InstructorAvailabilityEntity} from "../../entities/instructor-availability.entity";
 import {InternalServerException, NotFoundException} from "../../config";
+import {ReservationEntity} from "../../entities/reservation.entity";
 
 @injectable()
 
@@ -18,23 +19,28 @@ export class InstructorPrismaRepository implements IInstructorRepository {
     async getAvailability(instructorId: number, startDate: Date, endDate: Date): Promise<InstructorEntity> {
 
         let whereCondition: any = {id: instructorId};
-
-        if (startDate && endDate) {
-            whereCondition.availabilities = {
-                some: {
-                    activeFrom: {
-                        gte: startDate.toISOString(),
-                    },
-                    activeTo: {
-                        lte: endDate.toISOString(),
-                    },
-                },
-            };
-        }
+        // console.log(startDate.toISOString())
+        //  if (startDate && endDate) {
+        //      whereCondition.availabilities = {
+        //          some: {
+        //              AND: [
+        //                  {
+        //                      activeFrom: {
+        //                          gte: new Date(startDate), // Convert to Date object
+        //                      },
+        //                  },
+        //                  {
+        //                      activeTo: {
+        //                          lte: new Date(endDate), // Convert to Date object
+        //                      },
+        //                  },
+        //              ],
+        //          },
+        //      };
+        //  }
         try {
             const instructor = await this.prismaClient.instructor.findUniqueOrThrow({
-                where: whereCondition,
-                include: {availabilities: true}
+                where: whereCondition, include: {availabilities: true}
             });
             return this.dbItemToEntity(instructor);
         } catch (error) {
@@ -46,6 +52,23 @@ export class InstructorPrismaRepository implements IInstructorRepository {
 
     }
 
+
+    async book(instructorId: number, studentId: number, fromDate: Date, toDate: Date): Promise<void> {
+        const dbResult = await this.prismaClient.studentReservations.create({
+            data: {
+                studentId: studentId, instructorId: instructorId, from: fromDate, to: toDate
+            }
+        });
+    }
+
+    async getReservations(instructorId: number, startDate: Date, endDate: Date): Promise<ReservationEntity[]> {
+        const dbReservations = await this.prismaClient.studentReservations.findMany({
+            where: {
+                instructorId: instructorId
+            }
+        });
+        return dbReservations.map(r => this._dbReservationToEntity(r));
+    }
 
     private dbItemToEntity(item: any): InstructorEntity {
         const instructor = {
@@ -62,16 +85,20 @@ export class InstructorPrismaRepository implements IInstructorRepository {
         // Convert the database availability objects to InstructorAvailabilityEntity instances
         if (item.availabilities) {
             instructor.availabilities = item.availabilities.map((availability: any) => {
-                return new InstructorAvailabilityEntity(
-                    availability.id,
-                    availability.dayOfWeek,
-                    availability.timeFrom,
-                    availability.timeTo,
-                    availability.activeFrom,
-                    availability.activeTo,
-                );
+                return new InstructorAvailabilityEntity(availability.id, availability.dayOfWeek, availability.timeFrom, availability.timeTo, availability.activeFrom, availability.activeTo,);
             });
         }
         return instructor;
+    }
+
+
+    private _dbReservationToEntity(dbItem: any): ReservationEntity {
+        return {
+            id: dbItem.id,
+            instructorId: dbItem.instructorId,
+            studentId: dbItem.studentId,
+            fromDate: dbItem.from,
+            toDate: dbItem.to
+        };
     }
 }
