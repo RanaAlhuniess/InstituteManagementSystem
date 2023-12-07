@@ -6,7 +6,7 @@ import {TokenResponseDto} from "../dtos/auth/token.response.dto";
 import {SigninRequestDto} from "../dtos/auth/signin.request.dto";
 import jwt from 'jsonwebtoken';
 import {
-    accessTokenConfig,
+    accessTokenConfig, BaseException, InternalServerException,
     JwtConfig,
     Logger,
     NotFoundException,
@@ -80,7 +80,7 @@ export class AuthService {
             }
             return this.generateTokenResponse(accessToken, refreshToken);
         } catch (e: any) {
-            throw new Error(e.message);
+            throw new InternalServerException(e.message);
         }
 
     }

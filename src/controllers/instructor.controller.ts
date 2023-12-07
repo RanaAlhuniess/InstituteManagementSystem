@@ -17,6 +17,8 @@ export class InstructorController extends BaseHttpController {
     )
     getInstructorAvailability(@request() req: Request) {
         const instructorId = parseInt(req.params.id);
-        return this.instructorService.getInstructorAvailability(instructorId)
+        const startDate = req.query.startDate as string | undefined;
+        const endDate = req.query.endDate as string | undefined;
+        return this.instructorService.getInstructorAvailability(instructorId, startDate, endDate)
     }
 }

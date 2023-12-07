@@ -12,8 +12,8 @@ export class InstructorService {
     ) {
     }
 
-    getInstructorAvailability(instructorId: number) {
-        const instructor = this.instructorRepository.getAvailability(instructorId);
+    async getInstructorAvailability(instructorId: number, startDate, endDate) {
+        const instructor = await this.instructorRepository.getAvailability(instructorId, startDate, endDate);
         return instructor;
     }
 }

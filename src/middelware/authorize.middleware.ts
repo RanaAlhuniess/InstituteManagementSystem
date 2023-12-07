@@ -6,7 +6,8 @@ import {UnauthorizedException} from "../config";
 export function authorize(...userRoles: UserRole[]) {
     return async (req: Request, _res: Response, next: NextFunction) => {
         const user = req['user'] as UserEntity;
-        if (!user || !userRoles.includes(user.roleId)) return next(new UnauthorizedException('You are not allowed to access this resource'))
+        if (!user || !userRoles.includes(user.roleId))
+            return next(new UnauthorizedException('You are not allowed to access this resource'))
         next();
     }
 }
