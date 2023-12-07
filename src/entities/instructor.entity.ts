@@ -1,5 +1,6 @@
 import {AddressEntity} from "./address.entity";
 import {InstructorAvailabilityEntity} from "./instructor-availability.entity";
+import {ReservationEntity} from "./reservation.entity";
 
 export class InstructorEntity {
     id: number;
@@ -17,6 +18,7 @@ export class InstructorEntity {
     teachingSince: Date;
 
     availabilities: InstructorAvailabilityEntity[];
+    reservations?: ReservationEntity[];
 
     address: AddressEntity;
 }

@@ -1,4 +1,4 @@
-import {BaseHttpController, controller, httpGet, httpPost, request} from "inversify-express-utils";
+import {BaseHttpController, controller, httpGet, httpPost, request, requestBody} from "inversify-express-utils";
 import passport from "passport";
 import { Request } from 'express';
 import {inject} from "inversify";
@@ -8,6 +8,8 @@ import {authorize} from "../middelware/authorize.middleware";
 import {validateParams} from "../middelware/validate-params.middleware";
 import {AvailabilityRequestDto} from "../dtos/instructor/availability.request.dto";
 import {queryParam, requestParam} from "inversify-express-utils/lib/decorators";
+import {BookingRequestDto} from "../dtos/instructor/booking.request.dto";
+import {validateBody} from "../middelware";
 
 @controller('/instructors')
 export class InstructorController extends BaseHttpController {
@@ -25,12 +27,13 @@ export class InstructorController extends BaseHttpController {
         return this.instructorService.getInstructorAvailability(instructorId, month)
     }
 
-    @httpPost('/:id/book', passport.authenticate('access-jwt', { session: false }))
-    async bookInstructorAvailability(@request() req: Request) {
-        const instructorId = parseInt(req.params.id);
-        const { studentId, dayOfWeek, startTime, endTime } = req.body;
-
-        // Logic to check if the selected slot is within the instructor's available range for the specific day
-        return this.instructorService.bookSpecificSlot(studentId, instructorId, dayOfWeek, startTime, endTime);
+    @httpPost('/:id/book',
+        passport.authenticate('access-jwt', { session: false }),
+        validateBody(BookingRequestDto)
+    )
+    async bookInstructorAvailability(@requestParam('id') id, @requestBody() dto: BookingRequestDto) {
+        const instructorId = parseInt(id);
+        await this.instructorService.book(instructorId, dto);
+        return [];
     }
 }
