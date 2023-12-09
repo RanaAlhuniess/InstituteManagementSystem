@@ -13,7 +13,7 @@ export class InstructorAvailabilityEntity {
 
     activeTo: string;
 
-    constructor(id: number, dayOfWeek: string, timeTo: Date, timeFrom: Date, activeFrom: Date, activeTo: Date | null) {
+    constructor(id: number, dayOfWeek: string, timeFrom: Date, timeTo: Date, activeFrom: Date, activeTo: Date | null) {
         this.timeFrom = formatTime(timeFrom);
         this.timeTo = formatTime(timeTo);
         this.dayOfWeek = dayOfWeek;

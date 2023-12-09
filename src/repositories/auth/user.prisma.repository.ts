@@ -70,8 +70,8 @@ export class UserPrismaRepository implements IUserRepository {
 
     private dbItemToEntity(item: any): UserEntity {
         const profileId = (item.roleId == UserRole.STUDENT)
-            ? item.student.id
-            : item.instructor.id;
+            ? item.student?.id
+            : item.instructor?.id;
         return {
             id: item.id,
             email: item.email,

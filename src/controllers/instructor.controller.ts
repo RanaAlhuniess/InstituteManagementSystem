@@ -1,6 +1,5 @@
 import {BaseHttpController, controller, httpGet, httpPost, request, requestBody} from "inversify-express-utils";
 import passport from "passport";
-import { Request } from 'express';
 import {inject} from "inversify";
 import {InstructorService} from "../services/instructor.service";
 import {UserRole} from "../entities/user-role.value";
@@ -34,6 +33,5 @@ export class InstructorController extends BaseHttpController {
     async bookInstructorAvailability(@requestParam('id') id, @requestBody() dto: BookingRequestDto) {
         const instructorId = parseInt(id);
         await this.instructorService.book(instructorId, dto);
-        return [];
     }
 }
