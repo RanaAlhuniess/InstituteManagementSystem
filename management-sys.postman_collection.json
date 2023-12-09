@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "bdaa961d-d436-46d2-9948-8aa971272ac3",
+		"name": "management-sys",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26447896"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"rana\",\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"Rana_1\",\r\n    \"roleId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"Rana_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/signin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9999/auth/signout",
+							"host": [
+								"localhost"
+							],
+							"port": "9999",
+							"path": [
+								"auth",
+								"signout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Instructor",
+			"item": [
+				{
+					"name": "Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"studentId\": 3,\r\n    \"date\": \"2023-12-15\",\r\n    \"from\": \"17:30\",\r\n    \"to\": \"18:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/instructors/4/book",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"instructors",
+								"4",
+								"book"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Overlaps",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 3,\r\n    \"date\": \"2023-12-02\",\r\n    \"from\": \"17:30\",\r\n    \"to\": \"18:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/instructors/4/book",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"instructors",
+										"4",
+										"book"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"41-MCm6SszpBXxMsYTlzBwsRBjKJoE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 09 Dec 2023 13:56:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"type\": \"Bad Request\",\n    \"statusCode\": 400,\n    \"errorMessage\": \"overlaps\"\n}"
+						},
+						{
+							"name": "Error - NotAvailable",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 3,\r\n    \"date\": \"2023-12-15\",\r\n    \"from\": \"17:30\",\r\n    \"to\": \"18:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/instructors/4/book",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"instructors",
+										"4",
+										"book"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "70"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"46-q4V+mLnSRyh+XQFUGRc9vqtOl/Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 09 Dec 2023 13:57:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"type\": \"Bad Request\",\n    \"statusCode\": 400,\n    \"errorMessage\": \"not available\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Availability",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/instructors/4/availability?month=2023-12",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"instructors",
+								"4",
+								"availability"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "2023-12"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/instructors/4/availability?month=2023-12",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"instructors",
+										"4",
+										"availability"
+									],
+									"query": [
+										{
+											"key": "month",
+											"value": "2023-12"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1569"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"621-TB56/eA5ONSYVxtc60TdDMwgb4k\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 09 Dec 2023 14:27:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"date\": \"2023-12-02\",\n        \"from\": \"11:00:00\",\n        \"to\": \"11:30:00\"\n    },\n    {\n        \"date\": \"2023-12-02\",\n        \"from\": \"12:00:00\",\n        \"to\": \"14:30:00\"\n    },\n    {\n        \"date\": \"2023-12-02\",\n        \"from\": \"15:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-03\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-04\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-05\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-06\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-07\",\n        \"from\": \"10:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-09\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-10\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-11\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-12\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-13\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-14\",\n        \"from\": \"10:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-16\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-17\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-18\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-19\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-20\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-21\",\n        \"from\": \"10:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-23\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-24\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-25\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-26\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-27\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-28\",\n        \"from\": \"10:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-30\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    },\n    {\n        \"date\": \"2023-12-31\",\n        \"from\": \"11:00:00\",\n        \"to\": \"21:00:00\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Get Sessions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/3/sessions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"3",
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Session",
+			"item": [
+				{
+					"name": "Cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sessions/1/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sessions",
+								"1",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
