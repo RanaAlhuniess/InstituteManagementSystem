@@ -13,6 +13,9 @@ import {InstructorPrismaRepository} from "../repositories/instructor/instructor.
 import {StudentService} from "../services/student.service";
 import {StudentPrismaRepository} from "../repositories/student/student.prisma.repository";
 import {IStudentRepository} from "../repositories/student/student.repository";
+import {SessionService} from "../services/session.service";
+import {SessionPrismaRepository} from "../repositories/session/session.prisma.repository";
+import {ISessionRepository} from "../repositories/session/session.repository";
 
 export const container = new Container();
 container.bind(Logger).toSelf();
@@ -22,6 +25,8 @@ container.bind(IUserRepository).to(UserPrismaRepository);
 container.bind(IInstructorRepository).to(InstructorPrismaRepository);
 container.bind(IRefreshTokenRepository).to(RefreshTokenPrismaRepository);
 container.bind(IStudentRepository).to(StudentPrismaRepository);
+container.bind(ISessionRepository).to(SessionPrismaRepository);
 container.bind(AuthService).toSelf();
 container.bind(InstructorService).toSelf();
 container.bind(StudentService).toSelf();
+container.bind(SessionService).toSelf();

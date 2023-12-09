@@ -4,6 +4,7 @@ import {UserEntity} from "../../entities/user.entity";
 import {DatabaseConnection} from "../../database";
 import {PrismaClient} from "@prisma/client";
 import {ForbiddenException} from "../../config";
+import {UserRole} from "../../entities/user-role.value";
 
 @injectable()
 
@@ -38,6 +39,22 @@ export class UserPrismaRepository implements IUserRepository {
             where: {
                 id: id,
             },
+            select: {
+                id: true,
+                roleId: true,
+                email: true,
+                password: true,
+                instructor: {
+                    select: {
+                        id: true,
+                    },
+                },
+                student: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
         })
         return this.dbItemToEntity(dbResult);
     }
@@ -52,11 +69,15 @@ export class UserPrismaRepository implements IUserRepository {
     }
 
     private dbItemToEntity(item: any): UserEntity {
+        const profileId = (item.roleId == UserRole.STUDENT)
+            ? item.student.id
+            : item.instructor.id;
         return {
             id: item.id,
             email: item.email,
             password: item.password,
-            roleId: item.roleId
+            roleId: item.roleId,
+            profileId: profileId
         } as UserEntity;
     }
 

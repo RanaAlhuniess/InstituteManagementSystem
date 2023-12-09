@@ -3,4 +3,6 @@ export class UserEntity {
     email: string;
     password: string;
     roleId: number;
+
+    profileId?: number;
 }

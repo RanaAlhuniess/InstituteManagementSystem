@@ -29,6 +29,7 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "prisma-soft-delete-middleware": "^1.2.0",
     "reflect-metadata": "^0.1.13",
     "winston": "^3.11.0"
   },

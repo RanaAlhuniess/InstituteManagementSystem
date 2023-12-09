@@ -19,6 +19,7 @@ export class StudentPrismaRepository implements IStudentRepository {
                 studentId: studentId,
             },
             select: {
+                id: true,
                 from: true,
                 to: true,
                 instructor: {
@@ -28,12 +29,14 @@ export class StudentPrismaRepository implements IStudentRepository {
                     },
                 },
             },
+
         });
         return sessions.map(session => this._dbItemToEntity(session));
     }
 
     private _dbItemToEntity(item: any): SessionEntity {
         return {
+            id: item.id,
             from: formatDateTime(item.from),
             to: formatDateTime(item.to),
             instructor: {firstName: item.instructor.firstName, lastName: item.instructor.lastName}

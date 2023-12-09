@@ -1,4 +1,5 @@
 export class SessionEntity {
+    id: number;
     from: string;
     to: string;
     instructor: {
