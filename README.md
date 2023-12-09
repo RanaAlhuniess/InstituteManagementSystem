@@ -34,6 +34,7 @@ accounts, log in, and book sessions with available instructors based on their sc
 - `/auth/login`: POST - Log in and generate JWT token for authentication.
 - `/auth/logout`: POST - Logout (invalidate JWT token).
 ### Instructors
+- `/instructors`: GET - Fetch instructors with pagination.
 - `/instructors/{id}/book`: POST - Book a session with an available instructor.
 - `/instructors/{id}/availability`: GET - Fetch available instructor schedules.
 
