@@ -64,7 +64,23 @@ export class InstructorPrismaRepository implements IInstructorRepository {
     async getReservations(instructorId: number, startDate: Date, endDate: Date): Promise<ReservationEntity[]> {
         const dbReservations = await this.prismaClient.studentReservations.findMany({
             where: {
-                instructorId: instructorId
+                instructorId: instructorId,
+                AND: [
+                    {
+                        OR: [
+                            {
+                                from: {
+                                    gte: startDate,
+                                },
+                            },
+                            {
+                                to: {
+                                    lte: endDate,
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
         });
         return dbReservations.map(r => this._dbReservationToEntity(r));
@@ -91,7 +107,6 @@ export class InstructorPrismaRepository implements IInstructorRepository {
         return instructor;
     }
 
-
     private _dbReservationToEntity(dbItem: any): ReservationEntity {
         return {
             id: dbItem.id,
@@ -101,4 +116,5 @@ export class InstructorPrismaRepository implements IInstructorRepository {
             toDate: dbItem.to
         };
     }
+
 }
