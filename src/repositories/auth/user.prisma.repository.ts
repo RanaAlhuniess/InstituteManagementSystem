@@ -3,7 +3,7 @@ import {IUserRepository} from "./user.repository";
 import {UserEntity} from "../../entities/user.entity";
 import {DatabaseConnection} from "../../database";
 import {PrismaClient} from "@prisma/client";
-import {ForbiddenException} from "../../config";
+import {ForbiddenException, UnauthorizedException} from "../../config";
 import {UserRole} from "../../entities/user-role.value";
 
 @injectable()
@@ -56,6 +56,7 @@ export class UserPrismaRepository implements IUserRepository {
                 },
             },
         })
+
         return this.dbItemToEntity(dbResult);
     }
 
@@ -65,11 +66,13 @@ export class UserPrismaRepository implements IUserRepository {
                 email: email,
             },
         })
+        if (!dbResult)
+            throw new UnauthorizedException('Unauthorized');
         return this.dbItemToEntity(dbResult);
     }
 
     private dbItemToEntity(item: any): UserEntity {
-        const profileId = (item.roleId == UserRole.STUDENT)
+        const profileId = (item?.roleId == UserRole.STUDENT)
             ? item.student?.id
             : item.instructor?.id;
         return {

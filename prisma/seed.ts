@@ -200,13 +200,6 @@ async function createInstructors(addressId: number) {
     ]);
 }
 
-function instructor1Availabilities() {
-    const instructor1Availabilities = {
-        timeFrom: new Date(new Date().setHours(11, 0, 0, 0)), // 11:00 AM
-        timeTo: new Date(new Date().setHours(21, 0, 0, 0)), // 9:00 PM
-    };
-}
-
 async function main() {
     const address = await createAddress();
     const users = await createInstructors(address.id)
