@@ -10,6 +10,7 @@ export class InstructorEntity {
     firstName: string;
 
     lastName: string;
+    bio?: string;
 
     email: string;
 

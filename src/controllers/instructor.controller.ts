@@ -9,12 +9,14 @@ import {AvailabilityRequestDto} from "../dtos/instructor/availability.request.dt
 import {queryParam, requestParam} from "inversify-express-utils/lib/decorators";
 import {BookingRequestDto} from "../dtos/instructor/booking.request.dto";
 import {validateBody} from "../middelware";
+import {PaginationDTO} from "../dtos/instructor/pagination.request.dto";
 
 @controller('/instructors')
 export class InstructorController extends BaseHttpController {
     constructor(@inject(InstructorService) private readonly instructorService: InstructorService) {
         super();
     }
+
     @httpGet('/:id/availability',
         validateParams(AvailabilityRequestDto),
         passport.authenticate('access-jwt', {session: false}),
@@ -27,11 +29,20 @@ export class InstructorController extends BaseHttpController {
     }
 
     @httpPost('/:id/book',
-        passport.authenticate('access-jwt', { session: false }),
+        passport.authenticate('access-jwt', {session: false}),
         validateBody(BookingRequestDto)
     )
     async bookInstructorAvailability(@requestParam('id') id, @requestBody() dto: BookingRequestDto) {
         const instructorId = parseInt(id);
         await this.instructorService.book(instructorId, dto);
+    }
+
+    @httpGet('/',
+        validateParams(PaginationDTO),
+        passport.authenticate('access-jwt', {session: false}),
+        authorize(UserRole.STUDENT)
+    )
+    getInstructors(@queryParam() dto: PaginationDTO) {
+        return this.instructorService.getAll(dto)
     }
 }

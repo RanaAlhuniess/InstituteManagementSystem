@@ -6,6 +6,7 @@ import {InstructorEntity} from "../../entities/instructor.entity";
 import {InstructorAvailabilityEntity} from "../../entities/instructor-availability.entity";
 import {InternalServerException, NotFoundException} from "../../config";
 import {ReservationEntity} from "../../entities/reservation.entity";
+import {PaginatedInstructorsEntity} from "../../entities/paginated.instructors.entity";
 
 @injectable()
 
@@ -86,6 +87,48 @@ export class InstructorPrismaRepository implements IInstructorRepository {
         return dbReservations.map(r => this._dbReservationToEntity(r));
     }
 
+    async findMany(pageSize: number, currentPage: number): Promise<PaginatedInstructorsEntity> {
+        const currentDate = new Date();
+        const skip = (currentPage - 1) * pageSize;
+       //TODO: refactor the condition
+        const [total, instructors] = await Promise.all([
+            this.prismaClient.instructor.count({
+                where: {
+                    availabilities: {
+                        some: {
+                            OR: [
+                                {activeTo: null},
+                                {activeTo: {gte: currentDate}}
+                            ],
+                        },
+                    },
+                },
+            }), // Get total count
+            this.prismaClient.instructor.findMany({
+                take: pageSize,
+                skip,
+                where: {
+                    availabilities: {
+                        some: {
+                            OR: [
+                                {activeTo: null},
+                                {activeTo: {gte: currentDate}},
+                            ],
+                        },
+                    },
+                },
+            }),
+        ]);
+
+        const instructorsEntities = instructors.map((instructor) =>
+            this.dbItemToEntity(instructor));
+        return {
+            data: instructorsEntities,
+            total,
+            currentPage: currentPage,
+        } as PaginatedInstructorsEntity
+    }
+
     private dbItemToEntity(item: any): InstructorEntity {
         const instructor = {
             id: item.id,
@@ -93,6 +136,7 @@ export class InstructorPrismaRepository implements IInstructorRepository {
             title: item.title,
             firstName: item.firstName,
             lastName: item.lastName,
+            bio: item.bio,
             gender: item.gender,
             teachingSince: item.teachingSince,
             availabilities: [],

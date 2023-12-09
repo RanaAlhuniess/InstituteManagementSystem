@@ -6,6 +6,8 @@ import {BookingRequestDto} from "../dtos/instructor/booking.request.dto";
 import {DateRange, extendMoment} from 'moment-range';
 import {InstructorAvailabilityEntity} from "../entities/instructor-availability.entity";
 import {ReservationEntity} from "../entities/reservation.entity";
+import {PaginatedInstructorsEntity} from "../entities/paginated.instructors.entity";
+import {PaginationDTO} from "../dtos/instructor/pagination.request.dto";
 
 const Moment = require('moment');
 
@@ -74,6 +76,12 @@ export class InstructorService {
         }
 
         await this.instructorRepository.book(instructorId, studentId, fromDate, toDate)
+    }
+
+    async getAll(dto: PaginationDTO): Promise<PaginatedInstructorsEntity> {
+        const pageSize = Number(dto.pageSize);
+        const currentPage = Number(dto.page);
+        return await this.instructorRepository.findMany(pageSize, currentPage);
     }
 
     private _getAvailableDayRange(availableDay: InstructorAvailabilityEntity, monthDate: moment.Moment) {
