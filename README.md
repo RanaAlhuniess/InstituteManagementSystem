@@ -39,6 +39,7 @@ accounts, log in, and book sessions with available instructors based on their sc
 
 ### Sessions
 - `/sessions/{id}/cancel`: DELETE - Manage booked sessions.
+- `/sessions/{id}`: POST - Manage booked sessions.
 
 ### Students
 - `/students/{id}/sessions`: GET - Fetch all booked sessions for a student.

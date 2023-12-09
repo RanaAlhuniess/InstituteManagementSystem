@@ -407,6 +407,43 @@
 			"name": "Session",
 			"item": [
 				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"studentId\": 3,\r\n    \"instructorId\": 4,\r\n    \"date\": \"2023-12-15\",\r\n    \"from\": \"17:30\",\r\n    \"to\": \"18:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sessions/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sessions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Cancel",
 					"request": {
 						"auth": {

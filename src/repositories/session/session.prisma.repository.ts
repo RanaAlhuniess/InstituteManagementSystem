@@ -2,7 +2,7 @@ import {ISessionRepository} from "./session.repository";
 import {inject, injectable} from "inversify";
 import {PrismaClient} from "@prisma/client";
 import {DatabaseConnection} from "../../database";
-import {ForbiddenException, Logger} from "../../config";
+import {ForbiddenException} from "../../config";
 
 @injectable()
 export class SessionPrismaRepository implements ISessionRepository {
@@ -36,5 +36,4 @@ export class SessionPrismaRepository implements ISessionRepository {
         }
 
     }
-
 }
